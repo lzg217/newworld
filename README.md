@@ -1,2 +1,2 @@
 # newworld
-打开新世界的大门
+opening the gate of newworld
