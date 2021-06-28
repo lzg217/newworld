@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<!-- saved from url=(0070)https://unixetc.com/post/v2ray-client-configuration-example-in-ubuntu/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>V2ray配置实例[最新v2fly] | UNIXETC</title>
+
+<meta name="generator" content="Hugo 0.78.2">
+<meta name="description" content="本文介绍了如何安装新版v2ray，以及服务端、客户端配置，包括Linux和windows版本。">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./V2ray配置实例[最新v2fly] _ UNIXETC_files/minimal.css">
+<link rel="canonical" href="https://unixetc.com/post/v2ray-client-configuration-example-in-ubuntu/">
+<link rel="alternate" type="application/rss+xml" href="https://unixetc.com/post/v2ray-client-configuration-example-in-ubuntu/" title="UNIXETC">
+<link rel="apple-touch-icon" sizes="180x180" href="https://unixetc.com/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://unixetc.com/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://unixetc.com/favicon-16x16.png">
+<link rel="manifest" href="https://unixetc.com/site.webmanifest">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+</head><body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed=""><header>
+  
+    <a href="https://unixetc.com/">UNIXETC</a>
+  
+  
+    <nav>
+    
+      <a href="https://unixetc.com/readme/">Readme</a>
+    
+      <a href="https://unixetc.com/etc/">/etc</a>
+    
+    </nav>
+  
+</header>
+
+<article>
+  <header>
+    <h1>V2ray配置实例[最新v2fly]</h1>
+    <time datetime="2020-09-07T00:00:00Z">September 07, 2020</time>
+  </header>
+  <p><strong>说明：</strong> 从V2Ray 4.27.0开始，请使用新版安装脚本，旧版安装配置实例仅供参考。</p>
+<h2 id="新版安装配置实例">新版安装配置实例</h2>
+<h3 id="服务端安装">服务端安装</h3>
+<h4 id="下载安装脚本">下载安装脚本</h4>
+<pre><code>➜  ~ curl -O https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh  
+</code></pre><h4 id="执行安装脚本">执行安装脚本</h4>
+<pre><code>➜  ~ bash ./install-release.sh
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   98k  100   98k    0     0   495k      0 --:--:-- --:--:-- --:--:--  495k
+info: Installing V2Ray v4.27.5 for x86_64
+Downloading V2Ray archive: https://github.com/v2fly/v2ray-core/releases/download/v4.27.5/v2ray-linux-64.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   644  100   644    0     0   5457      0 --:--:-- --:--:-- --:--:--  5457
+100 12.6M  100 12.6M    0     0  8316k      0  0:00:01  0:00:01 --:--:-- 10.2M
+Downloading verification file for V2Ray archive: https://github.com/v2fly/v2ray-core/releases/download/v4.27.5/v2ray-linux-64.zip.dgst
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   649  100   649    0     0   2368      0 --:--:-- --:--:-- --:--:--  2368
+100   590  100   590    0     0   1053      0 --:--:-- --:--:-- --:--:--  1053
+info: Extract the V2Ray package to /tmp/tmp.gWzZRTMMij and prepare it for installation.
+installed: /usr/local/bin/v2ray
+installed: /usr/local/bin/v2ctl
+installed: /usr/local/share/v2ray/geoip.dat
+installed: /usr/local/share/v2ray/geosite.dat
+installed: /usr/local/etc/v2ray/config.json
+installed: /var/log/v2ray/
+installed: /var/log/v2ray/access.log
+installed: /var/log/v2ray/error.log
+installed: /etc/systemd/system/v2ray.service
+installed: /etc/systemd/system/v2ray@.service
+removed: /tmp/tmp.gWzZRTMMij
+info: V2Ray v4.27.5 is installed.         //安装完成
+You may need to execute a command to remove dependent software: dnf remove curl unzip
+Please execute the command: systemctl enable v2ray; systemctl start v2ray
+</code></pre><h4 id="配置systemd服务">配置systemd服务</h4>
+<pre><code>➜  ~ systemctl enable v2ray //添加systemd服务模块
+Created symlink /etc/systemd/system/multi-user.target.wants/v2ray.service → /etc/systemd/system/v2ray.service.
+➜  ~ systemctl start v2ray  //开启v2ray服务
+➜  ~ service v2ray status  //检查v2ray服务状态
+Redirecting to /bin/systemctl status v2ray.service
+● v2ray.service - V2Ray Service
+   Loaded: loaded (/etc/systemd/system/v2ray.service; enabled; vendor preset: disabled)
+   Active: active (running) since Mon 2020-09-07 11:16:13 CST; 8s ago
+ Main PID: 25897 (v2ray)
+    Tasks: 6 (limit: 4566)
+   Memory: 4.7M
+   CGroup: /system.slice/v2ray.service
+           └─25897 /usr/local/bin/v2ray -config /usr/local/etc/v2ray/config.json
+
+Sep 07 11:16:13 bwgcn2 systemd[1]: Started V2Ray Service.
+Sep 07 11:16:13 bwgcn2 v2ray[25897]: V2Ray 4.27.5 (V2Fly, a community-driven edition of V2Ray.) Custom (go1.14.7 linux/amd64)
+Sep 07 11:16:13 bwgcn2 v2ray[25897]: A unified platform for anti-censorship.
+Sep 07 11:16:13 bwgcn2 v2ray[25897]: 2020/09/07 11:16:13 [Info] v2ray.com/core/common/platform/ctlcmd: &lt;v2ctl message&gt;
+Sep 07 11:16:13 bwgcn2 v2ray[25897]: v2ctl&gt; Read config:  /usr/local/etc/v2ray/config.json
+Sep 07 11:16:13 bwgcn2 v2ray[25897]: 2020/09/07 11:16:13 [Warning] v2ray.com/core: V2Ray 4.27.5 started
+
+</code></pre><h4 id="服务端配置">服务端配置</h4>
+<p>默认安装完成后，启用配置文件为<code>/usr/local/etc/v2ray/config.json</code>，但这个默认配置为空，因此需要自定义服务端配置。</p>
+<pre><code>{
+    "inbounds": [
+        {
+            "port": 10086, 
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "b831es1d-6324-4d53-ad4f-8cda2s5e0811"
+                    }
+                ]
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom"
+        }
+    ]
+}
+	
+</code></pre><h4 id="客户端配置">客户端配置</h4>
+<ul>
+<li>Windows客户端配置</li>
+</ul>
+<p>下载最新版<strong>v2rayN</strong>，地址为<a href="https://github.com/2dust/v2rayN/releases/download/3.23/v2rayN-Core.zip">https://github.com/2dust/v2rayN/releases/download/3.23/v2rayN-Core.zip</a></p>
+<p>配置参考下图：</p>
+<p><img src="./V2ray配置实例[最新v2fly] _ UNIXETC_files/v2fly_config.png" alt="“V2rayN配置”"></p>
+<ul>
+<li>Ubuntu客户端配置</li>
+</ul>
+<p>安装方法同服务端，编辑<code>/usr/local/etc/v2ray/config.json</code>，如下配置：</p>
+<pre><code>{
+    "inbounds": [
+        {
+            "port": 1080, 
+            "listen": "127.0.0.1",
+            "protocol": "socks",
+            "settings": {
+                "udp": true
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "vmess",
+            "settings": {
+                "vnext": [
+                    {
+                        "address": "127.99.117.94", 
+                        "port": 10086, 
+                        "users": [
+                            {
+                                "id": "b831es1d-6324-4d53-ad4f-8cda2s5e0811"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "protocol": "freedom",
+            "tag": "direct"
+        }
+    ],
+    "routing": {
+        "domainStrategy": "IPOnDemand",
+        "rules": [
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:private"
+                ],
+                "outboundTag": "direct"
+            }
+        ]
+    }
+}
+</code></pre><h2 id="旧版安装配置实例">旧版安装配置实例</h2>
+<p>推荐使用WebSocket传输模式，详细配置可参考<a href="https://unixetc.com/post/nginx-v2ray-websocket/">Nginx V2ray and WebSocket</a>.</p>
+<p>首先使用<code>bash &lt;(curl -L -s https://install.direct/go.sh)</code>来快捷安装v2ray，如下：</p>
+<pre><code>root@vm:~# bash &lt;(curl -L -s https://install.direct/go.sh)
+Installing V2Ray v4.18.0 on x86_64
+Downloading V2Ray: https://github.com/v2ray/v2ray-core/releases/download/v4.18.0/v2ray-linux-64.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   608    0   608    0     0    581      0 --:--:--  0:00:01 --:--:--   581
+100 10.5M  100 10.5M    0     0   172k      0  0:01:02  0:01:02 --:--:--  194k
+Extracting V2Ray package to /tmp/v2ray.
+Archive:  /tmp/v2ray/v2ray.zip
+  inflating: /tmp/v2ray/config.json  
+   creating: /tmp/v2ray/doc/
+  inflating: /tmp/v2ray/doc/readme.md  
+  inflating: /tmp/v2ray/geoip.dat    
+  inflating: /tmp/v2ray/geosite.dat  
+   creating: /tmp/v2ray/systemd/
+  inflating: /tmp/v2ray/systemd/v2ray.service  
+   creating: /tmp/v2ray/systemv/
+  inflating: /tmp/v2ray/systemv/v2ray  
+  inflating: /tmp/v2ray/v2ctl        
+ extracting: /tmp/v2ray/v2ctl.sig    
+  inflating: /tmp/v2ray/v2ray        
+ extracting: /tmp/v2ray/v2ray.sig    
+  inflating: /tmp/v2ray/vpoint_socks_vmess.json  
+  inflating: /tmp/v2ray/vpoint_vmess_freedom.json  
+PORT:51332
+UUID:7378f6a4-790a-11e9-8f9e-2a86e4085a59
+Created symlink /etc/systemd/system/multi-user.target.wants/v2ray.service → /etc/systemd/system/v2ray.service.
+V2Ray v4.18.0 is installed.
+</code></pre>
+<p>然后编辑<code>/etc/v2ray/config.json</code>文件，如下设置：</p>
+<pre><code>{
+  "inbounds": [{
+    "port": 1080,  // SOCKS 代理端口，在浏览器中需配置代理并指向这个端口
+    "listen": "127.0.0.1",
+    "protocol": "socks",
+    "settings": {
+      "udp": true
+    }
+  }],
+  "outbounds": [{
+    "protocol": "vmess",
+    "settings": {
+      "vnext": [{
+        "address": "server", // 服务器地址，请修改为你自己的服务器 ip 或域名
+        "port": 10086,  // 服务器端口
+        "users": [{ "id": "b831381d-6324-4d53-ad4f-8cda48b30811" }]
+      }]
+    }
+  },{
+    "protocol": "freedom",
+    "tag": "direct",
+    "settings": {}
+  }],
+  "routing": {
+    "domainStrategy": "IPOnDemand",
+    "rules": [{
+      "type": "field",
+      "ip": ["geoip:private"],
+      "outboundTag": "direct"
+    }]
+  }
+}
+</code></pre>
+<p>编辑完成后保存，重新启动v2ray</p>
+<pre><code>root@vm:~# service v2ray stop
+root@vm:~# service v2ray start
+root@vm:~# service v2ray status
+● v2ray.service - V2Ray Service
+   Loaded: loaded (/etc/systemd/system/v2ray.service; enabled; vendor preset: en
+   Active: active (running) since Sat 2019-05-18 08:58:43 CST; 5s ago
+ Main PID: 8025 (v2ray)
+    Tasks: 7 (limit: 2311)
+   CGroup: /system.slice/v2ray.service
+           └─8025 /usr/bin/v2ray/v2ray -config /etc/v2ray/config.json
+
+5月 18 08:58:43 vm systemd[1]: Started V2Ray Service.
+5月 18 08:58:43 vm v2ray[8025]: V2Ray 4.18.0 (Po) 20190228
+5月 18 08:58:43 vm v2ray[8025]: A unified platform for anti-censorship.
+5月 18 08:58:44 vm v2ray[8025]: 2019/05/18 08:58:44 [Warning] v2ray.com/core: V2
+</code></pre>
+<p>然后Firefox设置代理如下：</p>
+<p>设置-常规-网络设置
+勾选<strong>手动代理配置</strong>，在<strong>SOCKS主机</strong>中填入<code>127.0.0.1</code>本地IP和<strong>端口</strong>，协议勾选<strong>SOCKS_v5</strong>
+建议勾选<strong>使用SOCKSv5时代理DNS查询</strong></p>
+<p><img src="./V2ray配置实例[最新v2fly] _ UNIXETC_files/3178501606.webp" alt="20190518090412.webp"></p>
+
+</article>
+
+
+<center>
+<a href="https://portal.qiniu.com/signup?code=1hgqsr4wez4uq" rel="noreferrer" target="_blank">CDN</a>&nbsp;&nbsp;
+<a href="https://bandwagonhost.com/aff.php?aff=2547" rel="noreferrer" target="_blank">HOST</a>&nbsp;&nbsp;
+<script type="text/javascript" src="./V2ray配置实例[最新v2fly] _ UNIXETC_files/f.txt"></script>
+</center>
+
+</body></html>
