@@ -59,27 +59,18 @@ Sep 07 11:16:13 bwgcn2 v2ray[25897]: 2020/09/07 11:16:13 [Warning] v2ray.com/cor
 ****************************************************************************************************************
 第四步：服务端配置
 默认安装完成后，启用配置文件为/usr/local/etc/v2ray/config.json，但这个默认配置为空，因此需要自定义服务端配置。
-直接从github上下载就行了
+直接从本项目下载就行了
 ➜ wget -O /usr/local/etc/v2ray/config.json https://raw.githubusercontent.com/lzg217/newworld/main/config.json
-就是下面的格式
 
-{
-    "inbounds": [
-        {
-            "port": 10086, 
-            "protocol": "vmess",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "b831es1d-6324-4d53-ad4f-8cda2s5e0811"
-                    }
-                ]
-            }
-        }
-    ],
-    "outbounds": [
-        {
-            "protocol": "freedom"
-        }
-    ]
-}
+*********************************************************************************************************
+最后，如果联不上网，显示无法连接mux，安装V2Ray 路由规则文件，安裝最新發行的 geoip.dat 和 geosite.dat
+// 只更新 .dat 資料檔
+# bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-dat-release.sh)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+安裝和更新 V2Ray
+// 安裝執行檔和 .dat 資料檔
+# bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh)
+
+移除 V2Ray
+# bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh) --remove
