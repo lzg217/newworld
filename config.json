@@ -6,7 +6,7 @@
             "settings": {
                 "clients": [
                     {
-                        "id": "此处填入UUID"
+                        "id": "UUID"
                     }
                 ]
             }
