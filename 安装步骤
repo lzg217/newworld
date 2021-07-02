@@ -67,6 +67,7 @@ Sep 07 11:16:13 bwgcn2 v2ray[25897]: 2020/09/07 11:16:13 [Warning] v2ray.com/cor
 // 只更新 .dat 資料檔
 # bash <(curl -L https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-dat-release.sh)
 
+//另外检查防火墙是否已关闭
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 安裝和更新 V2Ray
 // 安裝執行檔和 .dat 資料檔
